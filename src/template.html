@@ -3,12 +3,70 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title> <%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-<div class="container">
-    <img id="land" src="" alt=""/>
-<h3> dont laught attt</h3>
+    <main>  
+    
+        <section class="window contact-Section">
+            <h1 id="titled">Today's To Do <i class="fa fa-refresh"></i></h1>
+          <div class="input-header">
+            <div class="to-do-input">
+<input type="text" id="item" placeholder="Add a task..">
+<button id="enter"><i class="fa fa-caret-left"></i></button>           
 </div>
+          </div>
+            <div class="to-do-list">
+               
+
+            </div>
+<button class="clean">clear all complete</button>
+        </section>
+
+        <style>
+            section h1{
+                border-bottom: 1px solid rgb(172, 172, 172);
+                margin: 0;
+                padding: 12px;;
+
+            }
+            form{
+                width: 100%;
+                display: flex;
+                margin: 0;
+                flex-direction: row
+            }form #add{
+                
+                width: 95%;
+                padding: 12px;
+                border: none;
+                outline: none;
+                border-bottom: 1px solid rgb(201, 201, 201);
+                font-size: 20px;
+
+            }.in{
+                border:none;
+                background-color: inherit;
+
+            }.fa-caret-left{
+                font-size: 20px;
+            }.fa-caret-left:hover{
+                color: orange;
+                cursor: pointer;
+            }
+            .clean{
+                border-radius: 0px;
+                border:none;
+                text-transform: capitalize;
+                padding: 2%;
+                font-size: 20px;
+                background-color: rgb(248, 248, 248);
+
+            }.clean:hover{
+                background-color: rgb(185, 185, 185);
+            }
+        </style>
+        </main>
 </body>
 </html>

@@ -1,5 +1,5 @@
-function generateJoke(){
-    return "Swiss mans maded"
+function generateJoke() {
+  return 'Swiss mans maded';
 }
 
-export default generateJoke
+export default generateJoke;

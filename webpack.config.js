@@ -1,27 +1,28 @@
 const path = require('path');
 const HtmlWebbpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
   mode: 'development',
-  entry:{
-    bundle: path.resolve(__dirname, './src/index.js')
+  entry: {
+    bundle: path.resolve(__dirname, './src/index.js'),
 
-},
+  },
   output: {
     filename: '[name][contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    clean:true,
+    clean: true,
     assetModuleFilename: '[name][ext]',
   },
-  devtool:'source-map',
-  devServer:{
-   static: {
-    directory: path.resolve(__dirname, 'dist')
-   },
-   port: 3000,
-   open:true,
-   hot:true,
-   compress:true,
-   historyApiFallback:true,
+  devtool: 'source-map',
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
+    },
+    port: 3000,
+    open: true,
+    hot: true,
+    compress: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -30,28 +31,28 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.js$/, 
+        test: /\.js$/,
         exclude: /node_modules/,
-        use:{
-            loader: 'babel-loader',
-            options:{
-                presets:['@babel/preset-env'],
-            }
-        }
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
 
       },
       {
-       test: /\.(png|svg|jpeg|jpg|gif)$/i,
-       type: 'asset/resource',
+        test: /\.(png|svg|jpeg|jpg|gif)$/i,
+        type: 'asset/resource',
       },
     ],
   },
-  plugins:[
+  plugins: [
     new HtmlWebbpackPlugin({
-        title: 'To-do list',
-        filename: 'index.html',
-        template:'src/template.html',
+      title: 'To-do list',
+      filename: 'index.html',
+      template: 'src/template.html',
     }),
-    
+
   ],
 };
