@@ -16,6 +16,22 @@ main {
 
 .update-controller {
   display: none;
+  flex-direction: row;
+}
+
+.update-controller button {
+  background-color: white;
+  border: none;
+}
+
+.update-controller button i {
+  font-size: 19px;
+  padding: 5px;
+  border-radius: 6px;
+}
+
+.update-controller button i:hover {
+  background-color: rgb(226, 225, 225);
 }
 
 .contact-Section {
@@ -64,6 +80,15 @@ main {
   color: grey;
 }
 
+.editBtn {
+  font-size: 25px;
+  padding: 10px;
+}
+
+.editBtn:hover {
+  background-color: rgb(235, 235, 235);
+}
+
 .input-controller {
   display: flex;
   flex-direction: row;
@@ -88,4 +113,38 @@ main {
 .input-controller input {
   height: 25px;
   width: 25px;
+}
+
+section h1 {
+  border-bottom: 1px solid rgb(172, 172, 172);
+  margin: 0;
+  padding: 12px;
+}
+
+.in {
+  border: none;
+  background-color: inherit;
+}
+
+.fa-caret-left {
+  font-size: 20px;
+  padding: 10px;
+}
+
+.fa-caret-left:hover {
+  cursor: pointer;
+  background-color: rgb(240, 239, 239);
+}
+
+.clean {
+  border-radius: 0;
+  border: none;
+  text-transform: capitalize;
+  padding: 2%;
+  font-size: 20px;
+  background-color: rgb(248, 248, 248);
+}
+
+.clean:hover {
+  background-color: rgb(185, 185, 185);
 }
