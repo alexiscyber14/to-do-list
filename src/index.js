@@ -59,15 +59,15 @@ function activateDeleteListeners() {
   });
 }
 
-function createItem(item) {
-  itemsArray.push(item.value);
+const createItem = (item = { task: item.value, index: itemsArray.length, completed: false }) => {
+  itemsArray.push(item);
   localStorage.setItem('items', JSON.stringify(itemsArray));
   window.location.reload();
-}
+};
 
 document.querySelector('#enter').addEventListener('click', () => {
   const item = document.querySelector('#item');
-  createItem(item);
+  createItem(item.value);
 });
 
 function checkBox() {
@@ -89,7 +89,7 @@ function checkBox() {
 function displayItems() {
   let items = '';
   for (let i = 0; i < itemsArray.length; i += 1) {
-    items += ` <div class="item">
+    items += ` <div class="item" >
   <div class="input-controller">
       <input type="checkbox" class="complete" name="completed" />
       <textarea disabled>${itemsArray[i]}</textarea>
@@ -116,9 +116,9 @@ function displayItems() {
 const clearBtn = document.querySelector('.clean');
 clearBtn.addEventListener('click', () => {
   const checks = document.querySelectorAll('input[type=checkbox]');
-  checks.forEach((checkbox) => {
+  checks.forEach((checkbox, i) => {
     if (checkbox.checked) {
-      deleteItem();
+      deleteItem(itemsArray[i]);
     }
   });
 });
