@@ -1,6 +1,10 @@
 import './style.css';
 
-const itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+import { updateCompletedStatus } from './modules/status.js';
+
+let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+
+export { itemsArray };
 
 function activateEditListeners() {
   const editBtn = document.querySelectorAll('.editBtn');
@@ -47,7 +51,7 @@ function activateSaveListeners() {
 }
 
 function deleteItem(i) {
-  itemsArray.splice(i, 1);
+  itemsArray = itemsArray.filter((item, index) => index !== i);
   localStorage.setItem('items', JSON.stringify(itemsArray));
   window.location.reload();
 }
@@ -78,9 +82,11 @@ function checkBox() {
       if (checks[i].checked) {
         inputs[i].style.textDecoration = 'line-through';
         inputs[i].style.color = 'grey';
+        updateCompletedStatus(i, true);
       } else {
         inputs[i].style.textDecoration = 'none';
         inputs[i].style.color = 'black';
+        updateCompletedStatus(i, false);
       }
     });
   });
@@ -116,11 +122,15 @@ function displayItems() {
 const clearBtn = document.querySelector('.clean');
 clearBtn.addEventListener('click', () => {
   const checks = document.querySelectorAll('input[type=checkbox]');
+  const indexesToDelete = [];
   checks.forEach((checkbox, i) => {
     if (checkbox.checked) {
-      deleteItem(itemsArray[i]);
+      indexesToDelete.push(i);
     }
   });
+  const filteredItemsArray = itemsArray.filter((item, i) => !indexesToDelete.includes(i));
+  localStorage.setItem('items', JSON.stringify(filteredItemsArray));
+  window.location.reload();
 });
 
 window.onload = function () {
