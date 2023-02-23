@@ -2,20 +2,167 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/jokey.js":
+/***/ "./src/index.js":
 /*!**********************!*\
-  !*** ./src/jokey.js ***!
+  !*** ./src/index.js ***!
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "itemsArray": () => (/* binding */ itemsArray)
 /* harmony export */ });
-function generateJoke() {
-  return "Swiss mans maded";
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
+/* harmony import */ var _modules_status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/status.js */ "./src/modules/status.js");
+
+
+var itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+
+function activateEditListeners() {
+  var editBtn = document.querySelectorAll('.editBtn');
+  var updateController = document.querySelectorAll('.update-controller');
+  var inputs = document.querySelectorAll('.input-controller textarea');
+  editBtn.forEach(function (eb, i) {
+    eb.addEventListener('click', function () {
+      updateController[i].style.display = 'flex';
+      editBtn[i].style.display = 'none';
+      inputs[i].disabled = false;
+    });
+  });
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateJoke);
+function activateCancelListeners() {
+  var cancelBtn = document.querySelectorAll('.cancelBtn');
+  var editBtn = document.querySelectorAll('.editBtn');
+  var updateController = document.querySelectorAll('.update-controller');
+  var inputs = document.querySelectorAll('.input-controller textarea');
+  cancelBtn.forEach(function (cb, i) {
+    cb.addEventListener('click', function () {
+      updateController[i].style.display = 'none';
+      editBtn[i].style.display = 'block';
+      inputs[i].disabled = true;
+      window.location.reload();
+    });
+  });
+}
+function updateItem(text, i) {
+  itemsArray[i] = text;
+  localStorage.setItem('items', JSON.stringify(itemsArray));
+  window.location.reload();
+}
+function activateSaveListeners() {
+  var saveBtn = document.querySelectorAll('.saveBtn');
+  var inputs = document.querySelectorAll('.input-controller textarea');
+  saveBtn.forEach(function (sb, i) {
+    sb.addEventListener('click', function () {
+      updateItem(inputs[i].value, i);
+    });
+  });
+}
+function deleteItem(i) {
+  itemsArray = itemsArray.filter(function (item, index) {
+    return index !== i;
+  });
+  localStorage.setItem('items', JSON.stringify(itemsArray));
+  window.location.reload();
+}
+function activateDeleteListeners() {
+  var deleteBtn = document.querySelectorAll('.deleteBtn');
+  deleteBtn.forEach(function (db, i) {
+    db.addEventListener('click', function () {
+      deleteItem(i);
+    });
+  });
+}
+var createItem = function createItem() {
+  var item = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    task: item.value,
+    index: itemsArray.length,
+    completed: false
+  };
+  itemsArray.push(item);
+  localStorage.setItem('items', JSON.stringify(itemsArray));
+  window.location.reload();
+};
+document.querySelector('#enter').addEventListener('click', function () {
+  var item = document.querySelector('#item');
+  createItem(item.value);
+});
+function checkBox() {
+  var checks = document.querySelectorAll('input[type=checkbox]');
+  var inputs = document.querySelectorAll('.input-controller textarea');
+  checks.forEach(function (ck, i) {
+    ck.addEventListener('change', function () {
+      if (checks[i].checked) {
+        inputs[i].style.textDecoration = 'line-through';
+        inputs[i].style.color = 'grey';
+        (0,_modules_status_js__WEBPACK_IMPORTED_MODULE_1__.updateCompletedStatus)(i, true);
+      } else {
+        inputs[i].style.textDecoration = 'none';
+        inputs[i].style.color = 'black';
+        (0,_modules_status_js__WEBPACK_IMPORTED_MODULE_1__.updateCompletedStatus)(i, false);
+      }
+    });
+  });
+}
+function displayItems() {
+  var items = '';
+  for (var i = 0; i < itemsArray.length; i += 1) {
+    items += " <div class=\"item\" >\n  <div class=\"input-controller\">\n      <input type=\"checkbox\" class=\"complete\" name=\"completed\" />\n      <textarea disabled>".concat(itemsArray[i], "</textarea>\n      <div class=\"edit-controller\">\n          <i class=\"fa fa-ellipsis-v editBtn\"></i>\n      </div>\n  </div>\n\n  <div class=\"update-controller\">\n  <button class=\"saveBtn\"><i class=\"fa fa-save\"></i></button>\n  <button class=\"cancelBtn\"><i class=\"fa fa-times\"></i></button>\n  <button class=\"deleteBtn\"><i class=\"fa fa-trash\"></i></button>\n  </div>\n          </div>");
+  }
+  document.querySelector('.to-do-list').innerHTML = items;
+  activateDeleteListeners();
+  activateEditListeners();
+  activateSaveListeners();
+  activateCancelListeners();
+  checkBox();
+}
+var clearBtn = document.querySelector('.clean');
+clearBtn.addEventListener('click', function () {
+  var checks = document.querySelectorAll('input[type=checkbox]');
+  var indexesToDelete = [];
+  checks.forEach(function (checkbox, i) {
+    if (checkbox.checked) {
+      indexesToDelete.push(i);
+    }
+  });
+  var filteredItemsArray = itemsArray.filter(function (item, i) {
+    return !indexesToDelete.includes(i);
+  });
+  localStorage.setItem('items', JSON.stringify(filteredItemsArray));
+  window.location.reload();
+});
+window.onload = function () {
+  displayItems();
+};
+
+/***/ }),
+
+/***/ "./src/modules/status.js":
+/*!*******************************!*\
+  !*** ./src/modules/status.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "updateCompletedStatus": () => (/* binding */ updateCompletedStatus)
+/* harmony export */ });
+/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../index.js */ "./src/index.js");
+
+function updateCompletedStatus(index, completed) {
+  var itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+  var item = itemsArray[index];
+  if (typeof item === 'string') {
+    itemsArray[index] = {
+      task: item,
+      index: index,
+      completed: completed
+    };
+  } else {
+    item.completed = completed;
+  }
+  localStorage.setItem('items', JSON.stringify(itemsArray));
+}
 
 /***/ }),
 
@@ -38,7 +185,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\r\nbackground-color: red;\r\n}", "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;AACA,qBAAqB;AACrB","sourcesContent":["body {\r\nbackground-color: red;\r\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n  background-color: #fff;\r\n  min-height: 98vh;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#titled {\r\n  padding: 4% 2%;\r\n  text-transform: uppercase;\r\n}\r\n\r\nmain {\r\n  padding: 1% 30%;\r\n}\r\n\r\n.update-controller {\r\n  display: none;\r\n  flex-direction: row;\r\n}\r\n\r\n.update-controller button {\r\n  background-color: white;\r\n  border: none;\r\n}\r\n\r\n.update-controller button i {\r\n  font-size: 19px;\r\n  padding: 5px;\r\n  border-radius: 6px;\r\n}\r\n\r\n.update-controller button i:hover {\r\n  background-color: rgb(226, 225, 225);\r\n}\r\n\r\n.contact-Section {\r\n  display: flex;\r\n  box-shadow: 2px 2px 8px grey;\r\n  flex-direction: column;\r\n  font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n.input-header {\r\n  display: flex;\r\n  flex-direction: row;\r\n  border-bottom: 1px solid grey;\r\n}\r\n\r\n.to-do-input {\r\n  display: flex;\r\n  width: 100%;\r\n  flex-direction: row;\r\n  justify-content: space-around;\r\n}\r\n\r\n.to-do-input input {\r\n  width: 90%;\r\n  padding: 2%;\r\n  border: none;\r\n  outline: none;\r\n  font-size: 25px;\r\n}\r\n\r\n#enter {\r\n  background-color: white;\r\n  border: none;\r\n}\r\n\r\n.item {\r\n  display: flex;\r\n  background-color: white;\r\n  flex-direction: row;\r\n  padding: 0%;\r\n  border-bottom: 1px solid grey;\r\n}\r\n\r\n.fa-refresh {\r\n  float: right;\r\n  color: grey;\r\n}\r\n\r\n.editBtn {\r\n  font-size: 25px;\r\n  padding: 10px;\r\n}\r\n\r\n.editBtn:hover {\r\n  background-color: rgb(235, 235, 235);\r\n}\r\n\r\n.input-controller {\r\n  display: flex;\r\n  flex-direction: row;\r\n  width: 100%;\r\n  align-items: last baseline;\r\n  justify-content: space-around;\r\n}\r\n\r\n.input-controller textarea {\r\n  width: 90%;\r\n  background-color: white;\r\n  border: none;\r\n  padding-top: 5%;\r\n  outline: none;\r\n  font-family: \"Poppins\", sans-serif;\r\n  font-weight: 400;\r\n  color: black;\r\n  font-size: 20px;\r\n  resize: none;\r\n}\r\n\r\n.input-controller input {\r\n  height: 25px;\r\n  width: 25px;\r\n}\r\n\r\nsection h1 {\r\n  border-bottom: 1px solid rgb(172, 172, 172);\r\n  margin: 0;\r\n  padding: 12px;\r\n}\r\n\r\n.in {\r\n  border: none;\r\n  background-color: inherit;\r\n}\r\n\r\n.fa-caret-left {\r\n  font-size: 20px;\r\n  padding: 10px;\r\n}\r\n\r\n.fa-caret-left:hover {\r\n  cursor: pointer;\r\n  background-color: rgb(240, 239, 239);\r\n}\r\n\r\n.clean {\r\n  border-radius: 0;\r\n  border: none;\r\n  text-transform: capitalize;\r\n  padding: 2%;\r\n  font-size: 20px;\r\n  background-color: rgb(248, 248, 248);\r\n}\r\n\r\n.clean:hover {\r\n  background-color: rgb(185, 185, 185);\r\n}\r\n", "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;EACE,sBAAsB;EACtB,gBAAgB;EAChB,aAAa;EACb,sBAAsB;AACxB;;AAEA;EACE,cAAc;EACd,yBAAyB;AAC3B;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,mBAAmB;AACrB;;AAEA;EACE,uBAAuB;EACvB,YAAY;AACd;;AAEA;EACE,eAAe;EACf,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,oCAAoC;AACtC;;AAEA;EACE,aAAa;EACb,4BAA4B;EAC5B,sBAAsB;EACtB,kCAAkC;AACpC;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,6BAA6B;AAC/B;;AAEA;EACE,aAAa;EACb,WAAW;EACX,mBAAmB;EACnB,6BAA6B;AAC/B;;AAEA;EACE,UAAU;EACV,WAAW;EACX,YAAY;EACZ,aAAa;EACb,eAAe;AACjB;;AAEA;EACE,uBAAuB;EACvB,YAAY;AACd;;AAEA;EACE,aAAa;EACb,uBAAuB;EACvB,mBAAmB;EACnB,WAAW;EACX,6BAA6B;AAC/B;;AAEA;EACE,YAAY;EACZ,WAAW;AACb;;AAEA;EACE,eAAe;EACf,aAAa;AACf;;AAEA;EACE,oCAAoC;AACtC;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,WAAW;EACX,0BAA0B;EAC1B,6BAA6B;AAC/B;;AAEA;EACE,UAAU;EACV,uBAAuB;EACvB,YAAY;EACZ,eAAe;EACf,aAAa;EACb,kCAAkC;EAClC,gBAAgB;EAChB,YAAY;EACZ,eAAe;EACf,YAAY;AACd;;AAEA;EACE,YAAY;EACZ,WAAW;AACb;;AAEA;EACE,2CAA2C;EAC3C,SAAS;EACT,aAAa;AACf;;AAEA;EACE,YAAY;EACZ,yBAAyB;AAC3B;;AAEA;EACE,eAAe;EACf,aAAa;AACf;;AAEA;EACE,eAAe;EACf,oCAAoC;AACtC;;AAEA;EACE,gBAAgB;EAChB,YAAY;EACZ,0BAA0B;EAC1B,WAAW;EACX,eAAe;EACf,oCAAoC;AACtC;;AAEA;EACE,oCAAoC;AACtC","sourcesContent":["body {\r\n  background-color: #fff;\r\n  min-height: 98vh;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n#titled {\r\n  padding: 4% 2%;\r\n  text-transform: uppercase;\r\n}\r\n\r\nmain {\r\n  padding: 1% 30%;\r\n}\r\n\r\n.update-controller {\r\n  display: none;\r\n  flex-direction: row;\r\n}\r\n\r\n.update-controller button {\r\n  background-color: white;\r\n  border: none;\r\n}\r\n\r\n.update-controller button i {\r\n  font-size: 19px;\r\n  padding: 5px;\r\n  border-radius: 6px;\r\n}\r\n\r\n.update-controller button i:hover {\r\n  background-color: rgb(226, 225, 225);\r\n}\r\n\r\n.contact-Section {\r\n  display: flex;\r\n  box-shadow: 2px 2px 8px grey;\r\n  flex-direction: column;\r\n  font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n.input-header {\r\n  display: flex;\r\n  flex-direction: row;\r\n  border-bottom: 1px solid grey;\r\n}\r\n\r\n.to-do-input {\r\n  display: flex;\r\n  width: 100%;\r\n  flex-direction: row;\r\n  justify-content: space-around;\r\n}\r\n\r\n.to-do-input input {\r\n  width: 90%;\r\n  padding: 2%;\r\n  border: none;\r\n  outline: none;\r\n  font-size: 25px;\r\n}\r\n\r\n#enter {\r\n  background-color: white;\r\n  border: none;\r\n}\r\n\r\n.item {\r\n  display: flex;\r\n  background-color: white;\r\n  flex-direction: row;\r\n  padding: 0%;\r\n  border-bottom: 1px solid grey;\r\n}\r\n\r\n.fa-refresh {\r\n  float: right;\r\n  color: grey;\r\n}\r\n\r\n.editBtn {\r\n  font-size: 25px;\r\n  padding: 10px;\r\n}\r\n\r\n.editBtn:hover {\r\n  background-color: rgb(235, 235, 235);\r\n}\r\n\r\n.input-controller {\r\n  display: flex;\r\n  flex-direction: row;\r\n  width: 100%;\r\n  align-items: last baseline;\r\n  justify-content: space-around;\r\n}\r\n\r\n.input-controller textarea {\r\n  width: 90%;\r\n  background-color: white;\r\n  border: none;\r\n  padding-top: 5%;\r\n  outline: none;\r\n  font-family: \"Poppins\", sans-serif;\r\n  font-weight: 400;\r\n  color: black;\r\n  font-size: 20px;\r\n  resize: none;\r\n}\r\n\r\n.input-controller input {\r\n  height: 25px;\r\n  width: 25px;\r\n}\r\n\r\nsection h1 {\r\n  border-bottom: 1px solid rgb(172, 172, 172);\r\n  margin: 0;\r\n  padding: 12px;\r\n}\r\n\r\n.in {\r\n  border: none;\r\n  background-color: inherit;\r\n}\r\n\r\n.fa-caret-left {\r\n  font-size: 20px;\r\n  padding: 10px;\r\n}\r\n\r\n.fa-caret-left:hover {\r\n  cursor: pointer;\r\n  background-color: rgb(240, 239, 239);\r\n}\r\n\r\n.clean {\r\n  border-radius: 0;\r\n  border: none;\r\n  text-transform: capitalize;\r\n  padding: 2%;\r\n  font-size: 20px;\r\n  background-color: rgb(248, 248, 248);\r\n}\r\n\r\n.clean:hover {\r\n  background-color: rgb(185, 185, 185);\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -522,16 +669,6 @@ function styleTagTransform(css, styleElement) {
 
 module.exports = styleTagTransform;
 
-/***/ }),
-
-/***/ "./src/assets/sky.png":
-/*!****************************!*\
-  !*** ./src/assets/sky.png ***!
-  \****************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "sky.png";
-
 /***/ })
 
 /******/ 	});
@@ -585,18 +722,6 @@ module.exports = __webpack_require__.p + "sky.png";
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
-/******/ 		__webpack_require__.g = (function() {
-/******/ 			if (typeof globalThis === 'object') return globalThis;
-/******/ 			try {
-/******/ 				return this || new Function('return this')();
-/******/ 			} catch (e) {
-/******/ 				if (typeof window === 'object') return window;
-/******/ 			}
-/******/ 		})();
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -613,51 +738,18 @@ module.exports = __webpack_require__.p + "sky.png";
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/publicPath */
-/******/ 	(() => {
-/******/ 		var scriptUrl;
-/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
-/******/ 		var document = __webpack_require__.g.document;
-/******/ 		if (!scriptUrl && document) {
-/******/ 			if (document.currentScript)
-/******/ 				scriptUrl = document.currentScript.src
-/******/ 			if (!scriptUrl) {
-/******/ 				var scripts = document.getElementsByTagName("script");
-/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
-/******/ 			}
-/******/ 		}
-/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
-/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
-/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
-/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
-/******/ 		__webpack_require__.p = scriptUrl;
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/nonce */
 /******/ 	(() => {
 /******/ 		__webpack_require__.nc = undefined;
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _jokey__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jokey */ "./src/jokey.js");
-/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
-/* harmony import */ var _assets_sky_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/sky.png */ "./src/assets/sky.png");
-
-
-
-var image = document.getElementById('land');
-image.src = _assets_sky_png__WEBPACK_IMPORTED_MODULE_2__;
-console.log(123);
-console.log((0,_jokey__WEBPACK_IMPORTED_MODULE_0__["default"])());
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
+/******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=bundlebdc8569b4078bb318a85.js.map
+//# sourceMappingURL=bundlee8266a4f9918aa41122f.js.map
