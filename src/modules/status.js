@@ -1,4 +1,4 @@
-import { itemsArray } from '../index.js';
+// import { itemsArray } from '../index.js';
 
 export function updateCompletedStatus(index, completed) {
   const itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
