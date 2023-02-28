@@ -51,7 +51,7 @@ function activateSaveListeners() {
   });
 }
 
- export function deleteItem(i) {
+export function deleteItem(i) {
   itemsArray = itemsArray.filter((item, index) => index !== i);
   localStorage.setItem('items', JSON.stringify(itemsArray));
   window.location.reload();
@@ -64,13 +64,11 @@ function activateDeleteListeners() {
   });
 }
 
-
 export const createItem = (item = { task: item.value, index: itemsArray.length, completed: false }) => {
   itemsArray.push(item);
   localStorage.setItem('items', JSON.stringify(itemsArray));
   window.location.reload();
 };
-
 
 document.querySelector('#enter').addEventListener('click', () => {
   const item = document.querySelector('#item');
@@ -139,4 +137,3 @@ clearBtn.addEventListener('click', () => {
 window.onload = function () {
   displayItems();
 };
-
