@@ -1,6 +1,7 @@
 import './style.css';
 
 import { updateCompletedStatus } from './modules/status.js';
+import { mode } from '../webpack.config';
 
 let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
 
@@ -50,7 +51,7 @@ function activateSaveListeners() {
   });
 }
 
-function deleteItem(i) {
+ export function deleteItem(i) {
   itemsArray = itemsArray.filter((item, index) => index !== i);
   localStorage.setItem('items', JSON.stringify(itemsArray));
   window.location.reload();
@@ -63,11 +64,13 @@ function activateDeleteListeners() {
   });
 }
 
-const createItem = (item = { task: item.value, index: itemsArray.length, completed: false }) => {
+
+export const createItem = (item = { task: item.value, index: itemsArray.length, completed: false }) => {
   itemsArray.push(item);
   localStorage.setItem('items', JSON.stringify(itemsArray));
   window.location.reload();
 };
+
 
 document.querySelector('#enter').addEventListener('click', () => {
   const item = document.querySelector('#item');
@@ -136,3 +139,4 @@ clearBtn.addEventListener('click', () => {
 window.onload = function () {
   displayItems();
 };
+
