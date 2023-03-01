@@ -1,10 +1,15 @@
-import { itemsArray } from './index.js';
-
 const createItem = (item = { task: item.value, index: itemsArray.length, completed: false }) => {
+  const itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
   itemsArray.push(item);
   localStorage.setItem('items', JSON.stringify(itemsArray));
-  window.location.reload();
+  // using mock reload for window.location.reload();
 };
-  // createItem()
 
-module.exports = createItem();
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('#enter').addEventListener('click', () => {
+    const item = document.querySelector('#item');
+    createItem(item.value);
+  });
+});
+
+module.exports = createItem;

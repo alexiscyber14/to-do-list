@@ -8,6 +8,5 @@ const localStorageMock = (() => {
 })();
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-const itemsArray = localStorageMock.getItem('items') ? JSON.parse(localStorageMock.getItem('items')) : [];
 
-module.exports = itemsArray;
+module.exports = localStorageMock;

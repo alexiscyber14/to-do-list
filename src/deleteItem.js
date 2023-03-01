@@ -1,9 +1,8 @@
-import { itemsArray } from './index.js';
-
 function deleteItem(i) {
+  let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
   itemsArray = itemsArray.filter((item, index) => index !== i);
   localStorage.setItem('items', JSON.stringify(itemsArray));
-  window.location.reload();
+// using mock reload for window.location.reload();
 }
 
-module.exports = deleteItem();
+module.exports = deleteItem;

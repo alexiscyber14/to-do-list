@@ -8,6 +8,10 @@
     "dev": "webpack serve",
     "test": "jest"
   },
+ "jest":{
+  "testEnvironment": "jsdom"
+},
+  
   "keywords": [],
   "author": "",
   "license": "ISC",
