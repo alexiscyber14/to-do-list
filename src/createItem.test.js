@@ -7,7 +7,7 @@ describe('createItem', () => {
   });
 
   it('should add an item to localStorage and reload the page', () => {
-    // Call createItem to add a new item
+    // Call  createItem to add a new item
     const mockReload = jest.fn();
     window.location.reload = mockReload;
 
