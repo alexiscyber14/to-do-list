@@ -15,12 +15,13 @@ describe('deleteItem', () => {
     // Call deleteItem to remove the second item
     const i = 1;
     deleteItem(i);
-    mockReload();
+    mockReload()
     // Check that the second item was removed
     const updatedItems = JSON.parse(localStorage.getItem('items'));
     expect(updatedItems).toEqual(['item1', 'item3']);
-
+  
     // Create a mock function for window.location.reload
     expect(mockReload).toHaveBeenCalled();
+  
   });
 });

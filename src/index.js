@@ -119,6 +119,8 @@ function displayItems() {
   checkBox();
 }
 
+
+
 const clearBtn = document.querySelector('.clean');
 clearBtn.addEventListener('click', () => {
   const checks = document.querySelectorAll('input[type=checkbox]');
